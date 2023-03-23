@@ -1,0 +1,117 @@
+spring:
+  application:
+    name: learn-graphql-java
+  servlet:
+    multipart:
+      max-file-size: 2MB
+  redis:
+    host: 10.130.79.48
+    port: 6379
+    password: aees@123
+    timeout: 10000
+    database: 1
+    lettuce:
+      pool:
+        min-idle: 5
+        max-idle: 50
+        max-active: 100
+        max-wait: 100000
+        time-between-eviction-runs: 60000
+  datasource:
+    aees:
+      name: aees
+      type: com.alibaba.druid.pool.DruidDataSource
+      url: jdbc:mysql://10.130.79.48:3306/aees?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+      username: root
+      password: aees@123
+      initial-size: 1
+      max-active: 60
+      min-idle: 1
+      max-wait: 60000
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+      filter:
+        stat:
+          log-slow-sql: true
+          slow-sql-millis: 1000
+          merge-sql: false
+        wall:
+          config:
+            multi-statement-allow: true
+    tenant:
+      name: tenant
+      type: com.alibaba.druid.pool.DruidDataSource
+      url: jdbc:mysql://10.130.79.48:3306/aees_tenant?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&serverTimezone=Asia/Shanghai&useOldAliasMetadataBehavior=true
+      username: root
+      password: aees@123
+      initial-size: 10
+      max-active: 100
+      min-idle: 10
+      max-wait: 60000
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+      filter:
+        stat:
+          log-slow-sql: true
+          slow-sql-millis: 1000
+          merge-sql: false
+        wall:
+          config:
+            multi-statement-allow: true
+  data:
+    mongodb:
+      host: 10.130.79.47:27017
+      database: aees-test
+      username: aees-mongo
+      password: ums!021822
+server:
+  http2:
+    enabled: true
+
+graphql:
+  servlet:
+    maxQueryDepth: 100
+    exception-handlers-enabled: true
+    tracingEnabled: false
+  playground:
+    headers:
+      Authorization: Bearer TOKEN
+      user_id: IDP|Philip
+      user_roles: get:bank_account
+    tabs:
+      - name: Get Bank Account
+        query: classpath:playground/get_bank_account.graphql
+        variables: classpath:playground/bank_account_variables.json
+      - name: Create Bank Account
+        query: classpath:playground/create_bank_account.graphql
+        variables: classpath:playground/bank_account_variables.json
+      - name: Update Bank Account
+        query: classpath:playground/update_bank_account.graphql
+        variables: classpath:playground/bank_account_variables.json
+      - name: Bank Account Subscription
+        query: classpath:playground/subscribe_to_bank_account.graphql
+        variables: classpath:playground/bank_account_variables.json
+    enabled: true
+  extended-scalars: NonNegativeInt, Date, DateTime
+voyager:
+  enabled: true
+
+logging:
+  pattern:
+    console: -%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(${PID:}){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %clr(%X{correlation_id}){red} %m%n%wEx

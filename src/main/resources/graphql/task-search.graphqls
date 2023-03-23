@@ -1,0 +1,12 @@
+type Task{
+    id:ID!
+    title:String
+    taskNo:String
+    executor:String
+    accepter:String
+
+}
+
+type Query{
+    getTask(id: ID):Task
+}
