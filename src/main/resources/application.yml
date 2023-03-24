@@ -111,14 +111,18 @@ graphql:
       - name: Bank Account Subscription
         query: classpath:playground/subscribe_to_bank_account.graphql
         variables: classpath:playground/bank_account_variables.json
+      - name: Tasks query with status
+        query: classpath:playground/get_tasks_with_status.graphql
+        varables: classpath:playground/tasks_variables.json
     enabled: true
   extended-scalars: NonNegativeInt, Date, DateTime
-voyager:
-  enabled: true
-
 logging:
   pattern:
     console: -%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(${PID:}){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %clr(%X{correlation_id}){red} %m%n%wEx
 es:
   index:
     user: aees-test-user
+voyager:
+  cdn:
+    enabled: true
+  enabled: true
