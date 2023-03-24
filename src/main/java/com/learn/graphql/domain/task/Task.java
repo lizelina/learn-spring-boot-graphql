@@ -1,7 +1,11 @@
 package com.learn.graphql.domain.task;
 
+import com.learn.graphql.domain.others.EsUser;
 import lombok.Builder;
 import lombok.Data;
+
+import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
@@ -24,7 +28,9 @@ public class Task {
     // 验收人(UserId)
     private String accepter;
 
- /*   // 到期日
+    private EsUser acceptor;
+
+    // 到期日
     private Date deadline;
 
     // 优先级id
@@ -75,7 +81,7 @@ public class Task {
     private Long linkId;
 
     // 数据内容(Json提交的数据)
-    private JSONObject jsonContent;
+//    private JSONObject jsonContent;
 
     // 租户id
     private Long tenantId;
@@ -86,9 +92,9 @@ public class Task {
     // 分配时间
     private Date assignTime;
 
-    private List<TsFilesDTO> files;
+    private List<TaskFile> files;
 
-    private List<TsRelevanceDTO> relevance;
+    private List<TaskRelevance> relevances;
 
-    private List<TsFollowersDTO> followers;*/
+    private List<TaskFollower> followers;
 }

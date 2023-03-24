@@ -4,9 +4,83 @@ type Task{
     taskNo:String
     executor:String
     accepter:String
-
+    acceptor:EsUser
+    deadline:String
+    priorityLevelId:String
+    projectId:String
+    taskTypeId:String
+    taskTypeName:String
+    module:String
+    label:String
+    describe:String
+    nodeId:String
+    nodeName:String
+    status:String
+    completeResultId:String
+    measures:String
+    score:String
+    comment:String
+    content:String
+    linkId:String
+    tenantId:String
+    completeTime:String
+    assignTime:String
+    files:[TaskFile]
+    relevances:[TaskRelevance]
+    followers:[TaskFollower]
 }
 
+
+type TaskFile{
+    id:String
+    fileName:String
+    path:String
+    size:String
+    refId:String
+    refType:String
+    tenantId:String
+    createBy:String
+    createTime:String
+    updateBy:String
+    updateTime:String
+    deleteFlag:String
+}
+
+type TaskRelevance{
+    id:String
+    tskId:String
+    refId:String
+    refType:String
+    refLabel:String
+    refUri:String
+    linkRemark:String
+    tenantId:String
+    deleteFlag:String
+}
+
+type TaskFollower{
+    id:String
+    follower:String
+    tskId:String
+    tenantId:String
+    deleteFlag:String
+}
+
+type EsUser{
+
+    staffId:String
+    headPortrait:String
+    userId:String
+    tenantId:String
+    userName:String
+    phone:String
+    postName:String
+    staffCode:String
+}
+
+
+
 type Query{
-    getTask(id: ID):Task
+    aTask(id: ID):Task
+    tasksByStatus(type: String, userId:String, tenantId:String):[Task]
 }
