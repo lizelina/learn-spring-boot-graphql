@@ -3,8 +3,9 @@ type Task{
     title:String
     taskNo:String
     executor:String
+    executorEs:EsUser
     accepter:String
-    acceptor:EsUser
+    acceptorEs:EsUser
     deadline:String
     priorityLevelId:String
     projectId:String
@@ -25,13 +26,13 @@ type Task{
     tenantId:String
     completeTime:String
     assignTime:String
-    files:[TaskFile]
-    relevances:[TaskRelevance]
-    followers:[TaskFollower]
+    files:[File]
+    relevances:[Relevance]
+    followers:[Follower]
 }
 
 
-type TaskFile{
+type File{
     id:String
     fileName:String
     path:String
@@ -46,7 +47,7 @@ type TaskFile{
     deleteFlag:String
 }
 
-type TaskRelevance{
+type Relevance{
     id:String
     tskId:String
     refId:String
@@ -58,7 +59,7 @@ type TaskRelevance{
     deleteFlag:String
 }
 
-type TaskFollower{
+type Follower{
     id:String
     follower:String
     tskId:String

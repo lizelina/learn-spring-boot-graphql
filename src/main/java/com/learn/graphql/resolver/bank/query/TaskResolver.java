@@ -33,22 +33,22 @@ public class TaskResolver implements GraphQLResolver<Task> {
     @Autowired
     private EsUserSearchService esUserSearchService;
 
-    public List<TaskFile> taskFile(Task task) {
+    public List<TaskFile> files(Task task) {
         log.info("获取任务附件 id {}", task.getId());
         return task.getFiles();
     }
 
-    public List<TaskRelevance> taskRelevances(Task task) {
+    public List<TaskRelevance> relevances(Task task) {
         log.info("获取任务关联 id {}", task.getId());
         return task.getRelevances();
     }
 
-    public List<TaskFollower> taskFollowers(Task task) {
+    public List<TaskFollower> followers(Task task) {
         log.info("获取任务关注人 id {}", task.getId());
         return task.getFollowers();
     }
 
-    public EsUser taskAcceptor(Task task) {
+    public EsUser acceptorEs(Task task) {
         ArrayList<String> userIds = new ArrayList<>();
         userIds.add(task.getAccepter());
         List<EsUser> esUsers = esUserSearchService.getByIds(task.getTenantId().toString(), userIds);
@@ -56,6 +56,10 @@ public class TaskResolver implements GraphQLResolver<Task> {
             return esUsers.get(0);
         }
         return null;
+    }
+
+    public EsUser executorEs(Task task) {
+        throw new RuntimeException("Executor获取失败");
     }
 
 }
