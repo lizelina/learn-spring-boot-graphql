@@ -1,25 +1,18 @@
 package com.learn.graphql.service.impl;
 
-import cn.hutool.core.collection.CollUtil;
-import com.learn.graphql.domain.others.EsUser;
 import com.learn.graphql.domain.task.Task;
 import com.learn.graphql.service.TaskGraphqlService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -73,34 +66,7 @@ public class TaskGraphqlServiceImpl implements TaskGraphqlService {
                 criteria.and(ACCEPTER).is(userId);
                 nodes = Arrays.asList("1","2","4");
                 break;
-//            //我关注的 1:开始;2:进行;4:重启
-//            //我关注的任务先去sql查询用户关注的任务Ids,按关注时间降序，Ids具有排序 -> Ids去mongo使用$in搜索查询到任务List -> 因为$in搜索排序会丢失
-//            //对List按照传入的Ids排序
-//            case "3":
-//                TsFollowersParam param = new TsFollowersParam();
-//                param.setFollower(data.getUserId().toString());
-//                param.setTenantId(data.getTenantId());
-//                //返回的任务Ids是按找用户关注时间降序排序
-//                List<TsFollowersDTO> dtos = tsFollowersService.queryWithOrder(param);
-//                List<Long> taskIds = new ArrayList<>();
-//                if (CollUtil.isNotEmpty(dtos)) {
-//                    taskIds = dtos.stream().map(TsFollowersDTO::getTskId).collect(Collectors.toList());
-//                }
-//                criteria.and(TsTaskInfoDTO.ID).in(taskIds);
-//                nodes = Arrays.asList(Constant.ONE, Constant.TWO, Constant.FOUR);
-//                data.setStatus(nodes);
-//                if (CollUtil.isNotEmpty(fields)) {
-//                    fields.addAll(defaultFields);
-//                }
-//                data.setFields(fields);
-//                if (MapUtil.isNotEmpty(sort)) {
-//                    data.setSort(sort);
-//                }
-//                //要根据传递的
-//                TaskSearchResultDTO taskResult = queryListByTypeWithoutPage(data, criteria);
-//                //根据taskIds排序
-//                TaskSearchResultDTO taskSearchResultDTO = sortListByIds(taskResult, taskIds, data.getPageDTO().getPageNo(), data.getPageDTO().getPageSize());
-//                return formatTasks(taskSearchResultDTO, data.getTenantId());
+
             //近期完成 3:完成;5：结束 近3个月
             //执行人为当前用户
             //完成时间倒序排序
@@ -115,12 +81,26 @@ public class TaskGraphqlServiceImpl implements TaskGraphqlService {
         criteria.and("tenantId").is(tenantId);
         Query query = new Query(criteria);
         List<Task> infos = mongoTemplate.find(query, Task.class, "ts_task_infos");
-        if (CollUtil.isNotEmpty(infos)){
-            for (Task info : infos) {
-                List<EsUser> byIds = esUserSearchService.getByIds(info.getTenantId().toString(), Arrays.asList(info.getAccepter()));
-                info.setAcceptor(CollUtil.isEmpty(byIds)?null:byIds.get(0));
-            }
-        }
+//        if (CollUtil.isNotEmpty(infos)){
+//            for (Task info : infos) {
+//                List<EsUser> byIds = esUserSearchService.getByIds(info.getTenantId().toString(), Arrays.asList(info.getAccepter()));
+//                info.setAcceptor(CollUtil.isEmpty(byIds)?null:byIds.get(0));
+//            }
+//        }
         return infos;
+    }
+
+    @Override
+    public Task updateTask(Long id, String title) {
+        Criteria criteria = new Criteria();
+        criteria.and("_id").is(id);
+        Query query = new Query(criteria);
+        Update update = new Update();
+        update.set("title", title);
+
+        Task task = mongoTemplate.findAndModify(query, update, FindAndModifyOptions.options().returnNew(true),
+                Task.class,
+                "ts_task_infos");
+        return task;
     }
 }

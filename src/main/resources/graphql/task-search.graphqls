@@ -6,6 +6,7 @@ type Task{
     executorEs:EsUser
     accepter:String
     acceptorEs:EsUser
+    executorErrorEs:EsUser
     deadline:String
     priorityLevelId:String
     projectId:String
@@ -82,6 +83,10 @@ type EsUser{
 
 
 type Query{
-    aTask(id: ID):Task
+    aTask(id: ID!):Task
     tasksByStatus(type: String, userId:String, tenantId:String):[Task]
+}
+
+type Mutation {
+    updateTaskById(input : UpdateTaskNameInput!): Task!
 }

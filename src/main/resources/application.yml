@@ -102,18 +102,23 @@ graphql:
       - name: Get Bank Account
         query: classpath:playground/get_bank_account.graphql
         variables: classpath:playground/bank_account_variables.json
-      - name: Create Bank Account
-        query: classpath:playground/create_bank_account.graphql
-        variables: classpath:playground/bank_account_variables.json
-      - name: Update Bank Account
-        query: classpath:playground/update_bank_account.graphql
-        variables: classpath:playground/bank_account_variables.json
-      - name: Bank Account Subscription
-        query: classpath:playground/subscribe_to_bank_account.graphql
-        variables: classpath:playground/bank_account_variables.json
+#      - name: Create Bank Account
+#        query: classpath:playground/create_bank_account.graphql
+#        variables: classpath:playground/bank_account_variables.json
+#      - name: Update Bank Account
+#        query: classpath:playground/update_bank_account.graphql
+#        variables: classpath:playground/bank_account_variables.json
+#      - name: Bank Account Subscription
+#        query: classpath:playground/subscribe_to_bank_account.graphql
+#        variables: classpath:playground/bank_account_variables.json
       - name: Tasks query with status
         query: classpath:playground/get_tasks_with_status.graphql
-        varables: classpath:playground/tasks_variables.json
+        variables: classpath:playground/tasks_variables.json
+      - name: TasK query by id
+        query: classpath:playground/get_task_by_id.graphql
+        variables: classpath:playground/tasks_variables2.json
+      - name: Update Task
+        query: classpath:playground/update_task.graphql
     enabled: true
   extended-scalars: NonNegativeInt, Date, DateTime
 logging:

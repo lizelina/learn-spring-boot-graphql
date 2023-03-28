@@ -7,9 +7,9 @@ package com.learn.graphql.resolver.bank.query;
 
 import com.learn.graphql.domain.others.EsUser;
 import com.learn.graphql.domain.task.Task;
-import com.learn.graphql.domain.task.TaskFile;
-import com.learn.graphql.domain.task.TaskFollower;
-import com.learn.graphql.domain.task.TaskRelevance;
+import com.learn.graphql.domain.task.File;
+import com.learn.graphql.domain.task.Follower;
+import com.learn.graphql.domain.task.Relevance;
 import com.learn.graphql.service.EsUserSearchService;
 import graphql.kickstart.tools.GraphQLResolver;
 import lombok.extern.slf4j.Slf4j;
@@ -17,8 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @version: 1.00.00
@@ -33,17 +35,21 @@ public class TaskResolver implements GraphQLResolver<Task> {
     @Autowired
     private EsUserSearchService esUserSearchService;
 
-    public List<TaskFile> files(Task task) {
+    private final ExecutorService executorService = Executors.newFixedThreadPool(
+            Runtime.getRuntime().availableProcessors()
+    );
+
+    public List<File> files(Task task) {
         log.info("获取任务附件 id {}", task.getId());
         return task.getFiles();
     }
 
-    public List<TaskRelevance> relevances(Task task) {
+    public List<Relevance> relevances(Task task) {
         log.info("获取任务关联 id {}", task.getId());
         return task.getRelevances();
     }
 
-    public List<TaskFollower> followers(Task task) {
+    public List<Follower> followers(Task task) {
         log.info("获取任务关注人 id {}", task.getId());
         return task.getFollowers();
     }
@@ -58,8 +64,23 @@ public class TaskResolver implements GraphQLResolver<Task> {
         return null;
     }
 
-    public EsUser executorEs(Task task) {
-        throw new RuntimeException("Executor获取失败");
+    public CompletableFuture<EsUser> executorEs(Task task) {
+        return CompletableFuture.supplyAsync(() -> {
+            ArrayList<String> userIds = new ArrayList<>();
+            userIds.add(task.getAccepter());
+            List<EsUser> esUsers = esUserSearchService.getByIds(task.getTenantId().toString(), userIds);
+            if (esUsers != null && esUsers.size() > 0) {
+                return esUsers.get(0);
+            }
+            return null;
+        }, executorService);
+    }
+
+    public EsUser executorErrorEs(Task task) {
+
+        //throw new GraphQLException("Executor获取失败");
+        //包装RuntimeException
+        throw new RuntimeException("SQL error");
     }
 
 }

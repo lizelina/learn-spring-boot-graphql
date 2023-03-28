@@ -1,0 +1,4 @@
+input UpdateTaskNameInput{
+    id:ID!
+    title:String!
+}

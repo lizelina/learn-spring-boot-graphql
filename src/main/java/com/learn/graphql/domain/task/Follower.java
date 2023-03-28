@@ -14,7 +14,7 @@ import lombok.Data;
  * @date: 2023-03-23 3:33 PM
  */
 @Data
-public class TaskFollower {
+public class Follower {
 
     // 主键id
     private Long id;

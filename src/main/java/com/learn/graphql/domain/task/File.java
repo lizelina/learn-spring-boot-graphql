@@ -16,7 +16,7 @@ import java.util.Date;
  * @date: 2023-03-23 3:13 PM
  */
 @Data
-public class TaskFile {
+public class File {
 
     // 主键id
     private Long id;

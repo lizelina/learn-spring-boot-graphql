@@ -92,9 +92,9 @@ public class Task {
     // 分配时间
     private Date assignTime;
 
-    private List<TaskFile> files;
+    private List<File> files;
 
-    private List<TaskRelevance> relevances;
+    private List<Relevance> relevances;
 
-    private List<TaskFollower> followers;
+    private List<Follower> followers;
 }

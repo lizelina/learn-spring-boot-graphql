@@ -1,0 +1,8 @@
+mutation UPDATE_TASK_BY_ID{
+    updateTaskById(input: {id:"1635882240921571329",
+    title: "mutation 任务更新"}) {
+        id
+        taskNo
+        title
+    }
+}

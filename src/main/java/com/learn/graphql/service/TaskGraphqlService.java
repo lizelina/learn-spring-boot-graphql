@@ -10,4 +10,6 @@ public interface TaskGraphqlService {
     Task getTaskById(Long Id);
 
    List<Task> getTasksByStatus(String type, Long userId, Long tenantId);
+
+   Task updateTask(Long id, String title);
 }

@@ -1,5 +1,5 @@
-query GET_TASKS_BY_STAUS($type:String, $userId:String, $tenantId:String){
-    tasksByStatus(type: $type, userId: $userId, tenantId: $tenantId){
+query GET_TASK_BY_ID($id:ID!){
+    aTask(id: $id){
         id
         title
         executor

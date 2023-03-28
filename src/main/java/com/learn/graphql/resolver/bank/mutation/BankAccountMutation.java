@@ -51,7 +51,7 @@ public class BankAccountMutation implements GraphQLMutationResolver {
     /**
      * Subscription (Chapter 33)
      */
-    bankAccountPublisher.publish(bankAccount);
+   // bankAccountPublisher.publish(bankAccount);
 
     return bankAccount;
   }
